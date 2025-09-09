@@ -1,0 +1,30 @@
+<div class="login-page">
+  <mat-card class="login-card">
+    <div class="login-header">
+      <mat-icon>lock</mat-icon>
+      <h2>Welcome back</h2>
+      <p>Please sign in to continue</p>
+      <div *ngIf="message" class="admin-message">
+        <mat-icon>warning</mat-icon>
+        <span>{{ message }}</span>
+      </div>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="submit()" class="login-form">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="you@example.com">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" placeholder="••••••••">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" class="full-width">Sign In</button>
+    </form>
+  </mat-card>
+</div>
+
+
+

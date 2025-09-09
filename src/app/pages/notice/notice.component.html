@@ -1,0 +1,78 @@
+<app-event-filter-sidebar (filtersChanged)="onFiltersApplied($event)">
+  <div class="notice-content">
+    <h1 class="notice-heading">Notices</h1>
+
+    <ng-container *ngIf="isLoading && !noticeData?.data?.length">
+      <div class="loading-container">
+        <mat-progress-spinner
+          mode="indeterminate"
+          diameter="40"
+        ></mat-progress-spinner>
+        <p>Loading notices...</p>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="hasError">
+      <div class="error-container">
+        <mat-icon>error_outline</mat-icon>
+        <h3>Failed to load notices</h3>
+        <p>{{ errorMessage }}</p>
+        <button
+          mat-raised-button
+          color="primary"
+          class="retry-btn"
+          (click)="retryLoading()"
+        >
+          <mat-icon>refresh</mat-icon> Try Again
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!hasError">
+      <div
+        class="notices-grid"
+        *ngIf="noticeData?.data?.length; else noResults"
+      >
+        <div
+          class="notice-item"
+          *ngFor="let notice of noticeData.data; index as i"
+        >
+          <div class="notice-number">{{ (page - 1) * limit + i + 1 }}</div>
+          <app-notice-card [notice]="notice"></app-notice-card>
+        </div>
+      </div>
+
+      <ng-template #noResults>
+        <div class="no-results">
+          <mat-icon>inbox</mat-icon>
+          <h3>No notices found</h3>
+          <p>Try adjusting filters or check back later.</p>
+        </div>
+      </ng-template>
+
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button mat-stroked-button (click)="prevPage()" [disabled]="page === 1">
+          Prev
+        </button>
+        <ng-container *ngFor="let p of paginationRange">
+          <button
+            *ngIf="p !== '...'"
+            mat-flat-button
+            [color]="p === page ? 'primary' : undefined"
+            (click)="goToPage(toNumber(p))"
+          >
+            {{ p }}
+          </button>
+          <span class="ellipsis" *ngIf="p === '...'">...</span>
+        </ng-container>
+        <button
+          mat-stroked-button
+          (click)="nextPage()"
+          [disabled]="page === totalPages"
+        >
+          Next
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</app-event-filter-sidebar>

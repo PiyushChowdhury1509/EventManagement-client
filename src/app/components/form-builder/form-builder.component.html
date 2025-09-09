@@ -1,0 +1,93 @@
+<mat-card>
+  <h2>Create Event Form</h2>
+
+  <form [formGroup]="formBuilderForm" (ngSubmit)="submitForm()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Form Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <div formArrayName="fields">
+      <div
+        *ngFor="let field of fields.controls; let i = index"
+        [formGroupName]="i"
+        class="field-block"
+      >
+        <mat-card class="field-card">
+          <h3>Field {{ i + 1 }}</h3>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Label</mat-label>
+            <input matInput formControlName="label" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option value="text">Text</mat-option>
+              <mat-option value="number">Number</mat-option>
+              <mat-option value="date">Date</mat-option>
+              <mat-option value="radio">Radio</mat-option>
+              <mat-option value="select">Select</mat-option>
+              <mat-option value="checkbox">Checkbox</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-checkbox formControlName="required">Required</mat-checkbox>
+
+          <div
+            formArrayName="options"
+            *ngIf="
+              field.get('type')?.value === 'radio' ||
+              field.get('type')?.value === 'select'
+            "
+          >
+            <h4>Options</h4>
+            <div
+              *ngFor="
+                let opt of $any(field.get('options')).controls;
+                let j = index
+              "
+            >
+              <mat-form-field appearance="fill">
+                <mat-label>Option {{ j + 1 }}</mat-label>
+                <input matInput [formControlName]="j" />
+              </mat-form-field>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="removeOption(i, j)"
+                type="button"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <button
+              mat-stroked-button
+              color="primary"
+              (click)="addOption(i)"
+              type="button"
+            >
+              Add Option
+            </button>
+          </div>
+
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="removeField(i)"
+            type="button"
+          >
+            Remove Field
+          </button>
+        </mat-card>
+      </div>
+    </div>
+
+    <button mat-raised-button color="accent" (click)="addField()" type="button">
+      + Add Field
+    </button>
+    <br /><br />
+    <button mat-raised-button color="primary" type="submit">Save Form</button>
+  </form>
+</mat-card>

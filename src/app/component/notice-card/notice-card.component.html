@@ -1,0 +1,43 @@
+<div class="notice-card">
+  <h2 class="notice-title">{{ convertToUpperCase(notice.name) }}</h2>
+
+  <div class="notice-header">
+    <div class="notice-meta">
+      <h3 class="notice-org">GoEvent • {{ formatDate(notice.createdAt) }}</h3>
+    </div>
+    <span class="menu">⋮</span>
+  </div>
+
+  <p class="notice-content">{{ notice.content }}</p>
+
+  <span class="notice-badge">{{ notice.category }}</span>
+
+  <div class="notice-attachment" *ngIf="notice.files">
+    <div class="file-icon">📂</div>
+    <a [href]="notice.attachmentUrl" target="_blank" class="file-link">
+      {{ notice.attachmentName || "View Attachment" }}
+    </a>
+  </div>
+
+  <div class="notice-actions">
+    <div class="left">
+      <span class="action heart" (click)="toggleLike()">
+        <mat-icon [ngClass]="{ liked: isLiked }">
+          {{ isLiked ? "favorite" : "favorite_border" }}
+        </mat-icon>
+      </span>
+      <span class="action">💬</span>
+      <span class="action">📤</span>
+    </div>
+    <span class="bookmark">🔖</span>
+  </div>
+
+  <div class="notice-footer">
+    <span class="likes"
+      ><strong>{{ notice.likeCount }}</strong> likes</span
+    >
+    <span class="comments"
+      ><strong>{{ notice.commentCount }}</strong> comments</span
+    >
+  </div>
+</div>

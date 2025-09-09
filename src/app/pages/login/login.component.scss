@@ -1,0 +1,55 @@
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #f3f4f6;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+  color: #111827;
+  padding: 18px;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.login-header h2 { margin: 6px 0 2px; font-weight: 700; }
+.login-header p { margin: 0; color: #6b7280; }
+.login-header mat-icon { color: #10b981; }
+
+.admin-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  color: #92400e;
+  font-size: 0.9rem;
+  
+  mat-icon {
+    color: #f59e0b;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.login-form { display: grid; gap: 12px; }
+.full-width { width: 100%; }
+
+::ng-deep .mdc-text-field--filled { background: #f9fafb; }
+::ng-deep .mat-mdc-card { background: transparent; }
+
+

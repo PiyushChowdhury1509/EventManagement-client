@@ -1,0 +1,59 @@
+<mat-card class="create-event">
+  <h2>Create Event</h2>
+  <mat-horizontal-stepper>
+    <mat-step [stepControl]="detailsForm" label="Basic Details">
+      <form [formGroup]="detailsForm">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Event Name</mat-label>
+          <input matInput formControlName="name" placeholder="e.g. Tech Summit 2025">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Details</mat-label>
+          <textarea matInput rows="5" formControlName="details" placeholder="Describe the event"></textarea>
+        </mat-form-field>
+
+        <div class="file-upload">
+          <label class="file-label">
+            <input type="file" multiple (change)="onFilesSelected($event)">
+            <mat-icon>upload</mat-icon>
+            <span>Upload files</span>
+          </label>
+          <div class="file-list" *ngIf="uploadedFiles.length">
+            <div class="file-item" *ngFor="let f of uploadedFiles">{{ f.name }}</div>
+          </div>
+        </div>
+
+        <div>
+          <button mat-stroked-button matStepperNext [disabled]="!detailsForm.valid">Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step label="Build Form">
+      <app-form-builder></app-form-builder>
+      <div>
+        <button mat-stroked-button matStepperPrevious>Back</button>
+        <button mat-stroked-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step label="Overview">
+      <div class="overview">
+        <h3>Overview</h3>
+        <p><strong>Name:</strong> {{ detailsForm.value.name }}</p>
+        <p><strong>Details:</strong> {{ detailsForm.value.details }}</p>
+        <div *ngIf="uploadedFiles.length">
+          <p><strong>Files:</strong></p>
+          <ul>
+            <li *ngFor="let f of uploadedFiles">{{ f.name }}</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <button mat-stroked-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary">Submit</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-card>

@@ -1,0 +1,148 @@
+.notice-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 18px 20px;
+  margin: 20px auto;
+  max-width: 650px;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  .notice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .notice-meta {
+      .notice-org {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #6b7280;
+        margin: 0;
+      }
+      .notice-location {
+        font-size: 0.8rem;
+        color: #6b7280;
+      }
+    }
+
+    .menu {
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #6b7280;
+    }
+  }
+
+  .notice-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #2563eb;
+    font-style: to-upper-case($string: "");
+  }
+
+  .notice-content {
+    font-size: 0.95rem;
+    color: #374151;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .notice-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .notice-attachment {
+    display: flex;
+    align-items: center;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+
+    .file-icon {
+      font-size: 1.3rem;
+      margin-right: 10px;
+    }
+
+    .file-link {
+      color: #2563eb;
+      font-weight: 500;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .notice-actions {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 0;
+
+    .left {
+      display: flex;
+      gap: 16px;
+
+      .action {
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    .bookmark {
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+  }
+
+  .notice-footer {
+    display: flex;
+    gap: 20px;
+    font-size: 0.9rem;
+    color: #374151;
+
+    .likes {
+      font-weight: 600;
+    }
+
+    .comments {
+      color: #4b5563;
+    }
+  }
+}
+.heart {
+  cursor: pointer;
+  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+
+  mat-icon {
+    font-size: 26px;
+    transition: transform 0.2s ease, color 0.3s ease;
+    color: black; 
+  }
+
+  .liked {
+    color: red; 
+    transform: scale(1.2);
+  }
+}
+
