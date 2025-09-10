@@ -5,6 +5,7 @@ import { EventsComponent } from './pages/events/events.component';
 import { FormBuilderComponent } from './components/form-builder/form-builder.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AdminGuard } from './guards/admin.guard';
+import { AdminProfileComponent } from './pages/admin/admin-profile/admin-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/notice', pathMatch: 'full' },
@@ -24,6 +25,11 @@ const routes: Routes = [
     canActivate: [AdminGuard],
   },
   { path: 'login', component: LoginComponent },
+  {
+    path: 'admin/:id',
+    component: AdminProfileComponent,
+    canActivate: [AdminGuard],
+  },
 ];
 
 @NgModule({

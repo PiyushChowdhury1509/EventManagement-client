@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit {
               email: userEmail,
               name: response?.data?.name || response?.name,
               role: response?.data?.role || response?.role,
+              id: response?.data?._id || response?._id,
             });
             try {
               localStorage.setItem('auth_user', JSON.stringify(response));

@@ -200,10 +200,47 @@
                 <h3>Registration Form Preview</h3>
               </div>
               <div class="form-preview">
-                <div class="preview-placeholder">
-                  <mat-icon>dynamic_form</mat-icon>
-                  <p>Form preview will appear here once you build your registration form</p>
-                </div>
+                <ng-container *ngIf="builtFormSnapshot; else noForm">
+                  <div class="form-overview">
+                    <div class="overview-item">
+                      <label>Form Name</label>
+                      <span>{{ builtFormSnapshot?.name || 'Untitled Form' }}</span>
+                    </div>
+                    <div class="overview-item">
+                      <label>Total Fields</label>
+                      <span>{{ builtFormSnapshot?.fields?.length || 0 }}</span>
+                    </div>
+                  </div>
+
+                  <div class="fields-preview" *ngIf="builtFormSnapshot?.fields?.length; else emptyFields">
+                    <div class="field-preview" *ngFor="let f of builtFormSnapshot.fields; let i = index">
+                      <div class="field-preview__header">
+                        <mat-icon>label</mat-icon>
+                        <h4>{{ i + 1 }}. {{ f.label || 'Untitled Field' }}</h4>
+                        <span class="type-pill">{{ f.type }}</span>
+                        <span class="req-pill" *ngIf="f.required">Required</span>
+                      </div>
+                      <div class="field-preview__options" *ngIf="f.options?.length">
+                        <label>Options:</label>
+                        <span class="option" *ngFor="let opt of f.options; let j = index">{{ opt }}<ng-container *ngIf="j < f.options.length - 1">, </ng-container></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ng-template #emptyFields>
+                    <div class="preview-placeholder">
+                      <mat-icon>dynamic_form</mat-icon>
+                      <p>No fields added yet. Use the builder to add fields.</p>
+                    </div>
+                  </ng-template>
+                </ng-container>
+                
+                <ng-template #noForm>
+                  <div class="preview-placeholder">
+                    <mat-icon>dynamic_form</mat-icon>
+                    <p>Form preview will appear here once you build your registration form</p>
+                  </div>
+                </ng-template>
               </div>
             </div>
           </div>

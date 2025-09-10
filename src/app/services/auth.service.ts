@@ -8,6 +8,7 @@ export class AuthService {
   private token: string | null = null;
   private name: string | null = null;
   private role: string | null = null;
+  private id: string | null = null;
   private authStateSubject = new BehaviorSubject<boolean>(false);
   authState$ = this.authStateSubject.asObservable();
   private logoutUrl = 'http://localhost:3000/api/v1/user/logout';
@@ -20,8 +21,10 @@ export class AuthService {
       const storedUser = localStorage.getItem('auth_user');
       if (storedUser) {
         const parsed = JSON.parse(storedUser);
+        console.log('loggedin user: ', parsed);
         this.name = parsed?.data?.name || parsed?.name || this.name;
         this.role = parsed?.data?.role || parsed?.role || this.role;
+        this.id = parsed?.data?._id || parsed?._id || this.id;
         const emailFromUser = parsed?.data?.email || parsed?.email;
         if (emailFromUser && !this.email) this.email = emailFromUser;
       }
@@ -58,10 +61,11 @@ export class AuthService {
     } catch {}
   }
 
-  setUser(user: { email?: string; name?: string; role?: string }): void {
+  setUser(user: { email?: string; name?: string; role?: string; id?: string }): void {
     if (user.email) this.setEmail(user.email);
     if (user.name) this.setName(user.name);
     if (user.role) this.setRole(user.role);
+    if (user.id) this.setId(user.id);
     this.refreshAuthState();
   }
 
@@ -77,8 +81,20 @@ export class AuthService {
     return this.name;
   }
 
+  getId(): string | null {
+    return this.id;
+  }
+
+  setId(id: string): void {
+    this.id = id;
+    try { localStorage.setItem('user_id', id); } catch {}
+  }
+
   isAuthenticated(): boolean {
-    return !!this.token;
+    // Require both: cookie token present AND we have basic user context
+    const hasCookie = !!this.readAuthCookie();
+    const hasUserInfo = !!(this.email || this.name || this.role || this.id);
+    return hasCookie && hasUserInfo;
   }
 
   refreshAuthState(): void {

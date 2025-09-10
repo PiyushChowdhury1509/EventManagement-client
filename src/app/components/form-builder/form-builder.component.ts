@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+// import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -26,7 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule,
+    // HttpClientModule,
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
@@ -41,7 +41,7 @@ export class FormBuilderComponent {
   @Output() formBuilt = new EventEmitter<any>();
   formBuilderForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder) {
     this.formBuilderForm = this.fb.group({
       name: ['', Validators.required],
       fields: this.fb.array([]),
@@ -106,11 +106,6 @@ export class FormBuilderComponent {
 
       // Emit the form data to parent component
       this.formBuilt.emit(payload);
-
-      this.http.post('http://localhost:5000/api/forms', payload).subscribe({
-        next: () => alert('Form created successfully!'),
-        error: () => alert('Error creating form'),
-      });
     }
   }
 
