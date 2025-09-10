@@ -83,10 +83,12 @@ export class LoginComponent implements OnInit {
             try {
               localStorage.setItem('auth_user', JSON.stringify(response));
               if (response?.data?.role || response?.role) {
-                localStorage.setItem('user_role', response?.data?.role || response?.role);
+                localStorage.setItem(
+                  'user_role',
+                  response?.data?.role || response?.role
+                );
               }
             } catch {}
-            // Ensure auth state reflects cookie presence immediately
             this.authService.refreshAuthState();
             this.snackBar.open('Login successful!', 'Close', {
               duration: 2000,
@@ -98,7 +100,11 @@ export class LoginComponent implements OnInit {
               this.returnUrl.includes('create-event') ||
               this.returnUrl.includes('create-notice')
             ) {
-              const role = (response?.data?.role || response?.role || '').toLowerCase();
+              const role = (
+                response?.data?.role ||
+                response?.role ||
+                ''
+              ).toLowerCase();
               const isAdmin = role === 'admin';
               if (!isAdmin) {
                 this.message = 'Admin access required for this page';

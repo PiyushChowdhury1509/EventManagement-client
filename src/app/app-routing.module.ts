@@ -6,6 +6,7 @@ import { FormBuilderComponent } from './components/form-builder/form-builder.com
 import { LoginComponent } from './pages/login/login.component';
 import { AdminGuard } from './guards/admin.guard';
 import { AdminProfileComponent } from './pages/admin/admin-profile/admin-profile.component';
+import { EventPageComponent } from './pages/event-page/event-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/notice', pathMatch: 'full' },
@@ -29,6 +30,10 @@ const routes: Routes = [
     path: 'admin/:id',
     component: AdminProfileComponent,
     canActivate: [AdminGuard],
+  },
+  {
+    path: 'event/:id',
+    component: EventPageComponent,
   },
 ];
 

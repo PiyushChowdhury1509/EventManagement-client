@@ -11,7 +11,6 @@ import { CreateEventComponent } from './pages/admin/create-event/create-event.co
 import { FormBuilderComponent } from './components/form-builder/form-builder.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { RouterModule } from '@angular/router';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,24 +29,21 @@ import { FilterSidebarComponent } from './components/filter-sidebar/filter-sideb
 import { CreateNoticeComponent } from './pages/create-notice/create-notice.component';
 import { CommentSectionComponent } from './components/comment-section/comment-section.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { AdminProfileComponent } from './pages/admin/admin-profile/admin-profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NoticeComponent,
     NoticeCardComponent,
-    EventsComponent,
     NavbarComponent,
+    EventsComponent,
     CreateNoticeComponent,
     CommentSectionComponent,
     ProfileComponent,
-    AdminProfileComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule,
     HttpClientModule,
     BrowserAnimationsModule,
     FormBuilderComponent,
