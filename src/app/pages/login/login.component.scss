@@ -46,10 +46,127 @@
   }
 }
 
-.login-form { display: grid; gap: 12px; }
-.full-width { width: 100%; }
+.demo-credentials {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  text-align: left;
 
-::ng-deep .mdc-text-field--filled { background: #f9fafb; }
-::ng-deep .mat-mdc-card { background: transparent; }
+  h4 {
+    margin: 0 0 8px 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .credential-item {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: #374151;
+    }
+  }
+
+  .demo-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+
+    .demo-btn {
+      flex: 1;
+      font-size: 0.75rem;
+      height: 32px;
+      color: #6b7280;
+      border-color: #d1d5db;
+
+      &:hover {
+        background: #f3f4f6;
+        border-color: #9ca3af;
+      }
+    }
+  }
+}
+
+.login-form { 
+  display: grid; 
+  gap: 16px; 
+}
+
+.full-width { 
+  width: 100%; 
+}
+
+.login-button {
+  height: 48px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.button-spinner {
+  margin-right: 8px;
+}
+
+// Form field styling
+::ng-deep .mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background: #f9fafb;
+    border-radius: 8px;
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+    background: #ffffff;
+  }
+
+  &.mat-focused .mat-mdc-form-field-focus-overlay {
+    background: #ffffff;
+  }
+
+  // Error state styling
+  &.mat-form-field-invalid {
+    .mat-mdc-text-field-wrapper {
+      border-color: #ef4444;
+    }
+  }
+
+  .mat-mdc-form-field-error {
+    color: #ef4444;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+  }
+}
+
+::ng-deep .mat-mdc-card { 
+  background: transparent; 
+}
+
+// Snackbar styles
+::ng-deep {
+  .success-snackbar {
+    background: #10b981;
+    color: white;
+  }
+
+  .error-snackbar {
+    background: #ef4444;
+    color: white;
+  }
+}
 
 

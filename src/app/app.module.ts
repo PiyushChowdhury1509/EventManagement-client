@@ -26,9 +26,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FilterSidebarComponent } from './components/filter-sidebar/filter-sidebar.component';
-import { LoginComponent } from './pages/login/login.component';
 import { CreateNoticeComponent } from './pages/create-notice/create-notice.component';
 import { CommentSectionComponent } from './components/comment-section/comment-section.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -37,9 +37,9 @@ import { CommentSectionComponent } from './components/comment-section/comment-se
     NoticeCardComponent,
     EventsComponent,
     NavbarComponent,
-    LoginComponent,
     CreateNoticeComponent,
     CommentSectionComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

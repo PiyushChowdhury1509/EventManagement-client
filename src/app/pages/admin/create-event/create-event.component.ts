@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,9 +23,24 @@ import { FormBuilderComponent } from '../../../components/form-builder/form-buil
 @Component({
   selector: 'app-create-event',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatStepperModule, MatButtonModule, MatInputModule, MatCardModule, MatIconModule, MatFormFieldModule, MatSnackBarModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule, HttpClientModule, FormBuilderComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatStepperModule,
+    MatButtonModule,
+    MatInputModule,
+    MatCardModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    HttpClientModule,
+    FormBuilderComponent,
+  ],
   templateUrl: './create-event.component.html',
-  styleUrls: ['./create-event.component.scss']
+  styleUrls: ['./create-event.component.scss'],
 })
 export class CreateEventComponent {
   detailsForm: FormGroup;
@@ -66,7 +86,7 @@ export class CreateEventComponent {
   onDrop(event: DragEvent) {
     event.preventDefault();
     this.isDragOver = false;
-    
+
     if (event.dataTransfer?.files) {
       const files = Array.from(event.dataTransfer.files);
       this.uploadedFiles = [...this.uploadedFiles, ...files];
@@ -86,16 +106,10 @@ export class CreateEventComponent {
   }
 
   publishEvent() {
-    // Mark all fields as touched to show validation errors
     this.detailsForm.markAllAsTouched();
-    
     if (this.detailsForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
-      
-      // Create FormData to handle files
       const formData = new FormData();
-      
-      // Add event details
       formData.append('name', this.detailsForm.value.name);
       formData.append('details', this.detailsForm.value.details);
       formData.append('eventDate', this.detailsForm.value.eventDate);
@@ -103,73 +117,62 @@ export class CreateEventComponent {
       formData.append('endDate', this.detailsForm.value.endDate || '');
       formData.append('endTime', this.detailsForm.value.endTime || '');
       formData.append('location', this.detailsForm.value.location || '');
-      
-      // Add form data if available (from form builder)
       if (this.builtFormSnapshot) {
         formData.append('form', JSON.stringify(this.builtFormSnapshot));
       }
-      
-      // Add uploaded files
       this.uploadedFiles.forEach((file, index) => {
         formData.append(`files`, file);
       });
-      
-      // Add metadata
       formData.append('createdAt', new Date().toISOString());
       formData.append('status', 'draft');
-      
-      // Make API call to demo URL
-      this.http.post('https://jsonplaceholder.typicode.com/posts', {
-        title: this.detailsForm.value.name,
-        body: this.detailsForm.value.details,
-        userId: 1,
-        eventDate: this.detailsForm.value.eventDate,
-        eventTime: this.detailsForm.value.eventTime,
-        endDate: this.detailsForm.value.endDate,
-        endTime: this.detailsForm.value.endTime,
-        location: this.detailsForm.value.location,
-        files: this.uploadedFiles.map(file => ({
-          name: file.name,
-          size: file.size,
-          type: file.type
-        })),
-        form: this.builtFormSnapshot || null,
-        timestamp: new Date().toISOString()
-      }).subscribe({
-        next: (response) => {
-          console.log('Event created successfully:', response);
-          this.isSubmitting = false;
-          
-          // Show success message
-          this.snackBar.open('Event created successfully!', 'Close', {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            panelClass: ['success-snackbar']
-          });
-          
-          // Redirect to notice page after a short delay
-          setTimeout(() => {
-            this.router.navigate(['/notice']);
-          }, 1500);
-        },
-        error: (error) => {
-          console.error('Error creating event:', error);
-          this.isSubmitting = false;
-          
-          // Show error message
-          this.snackBar.open('Failed to create event. Please try again.', 'Close', {
-            duration: 5000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            panelClass: ['error-snackbar']
-          });
-        }
-      });
+      this.http
+        .post('https://jsonplaceholder.typicode.com/posts', {
+          title: this.detailsForm.value.name,
+          body: this.detailsForm.value.details,
+          eventDate: this.detailsForm.value.eventDate,
+          eventTime: this.detailsForm.value.eventTime,
+          endDate: this.detailsForm.value.endDate,
+          endTime: this.detailsForm.value.endTime,
+          location: this.detailsForm.value.location,
+          files: this.uploadedFiles.map((file) => ({
+            name: file.name,
+            size: file.size,
+            type: file.type,
+          })),
+          form: this.builtFormSnapshot || null,
+          timestamp: new Date().toISOString(),
+        })
+        .subscribe({
+          next: (response) => {
+            console.log('Event created successfully:', response);
+            this.isSubmitting = false;
+            this.snackBar.open('Event created successfully!', 'Close', {
+              duration: 3000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar'],
+            });
+            setTimeout(() => {
+              this.router.navigate(['/notice']);
+            }, 1500);
+          },
+          error: (error) => {
+            console.error('Error creating event:', error);
+            this.isSubmitting = false;
+            this.snackBar.open(
+              'Failed to create event. Please try again.',
+              'Close',
+              {
+                duration: 5000,
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                panelClass: ['error-snackbar'],
+              }
+            );
+          },
+        });
     }
   }
-
-  // Method to receive form data from form builder component
   onFormBuilt(formData: any) {
     this.builtFormSnapshot = formData;
     console.log('Form built:', formData);
@@ -193,7 +196,7 @@ export class CreateEventComponent {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
 
     if (eventTime) {
@@ -212,7 +215,7 @@ export class CreateEventComponent {
           weekday: 'long',
           year: 'numeric',
           month: 'long',
-          day: 'numeric'
+          day: 'numeric',
         });
         if (endTime) {
           formatted += ` at ${endTime}`;

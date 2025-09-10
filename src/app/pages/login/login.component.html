@@ -8,23 +8,97 @@
         <mat-icon>warning</mat-icon>
         <span>{{ message }}</span>
       </div>
+
+      <div class="demo-credentials">
+        <h4>Demo Credentials:</h4>
+        <div class="credential-item">
+          <strong>Admin:</strong> ad@gmail.com / strong
+        </div>
+        <div class="credential-item">
+          <strong>User:</strong> st@gmail.com / strong
+        </div>
+        <div class="demo-buttons">
+          <button
+            mat-stroked-button
+            (click)="fillDemoCredentials(true)"
+            class="demo-btn"
+          >
+            Fill Admin
+          </button>
+          <button
+            mat-stroked-button
+            (click)="fillDemoCredentials(false)"
+            class="demo-btn"
+          >
+            Fill User
+          </button>
+        </div>
+      </div>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="submit()" class="login-form">
-      <mat-form-field appearance="fill" class="full-width">
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" placeholder="you@example.com">
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+        />
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+        >
+          <span *ngIf="loginForm.get('email')?.errors?.['required']"
+            >Email is required</span
+          >
+          <span *ngIf="loginForm.get('email')?.errors?.['email']"
+            >Please enter a valid email</span
+          >
+        </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width">
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" placeholder="••••••••">
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+        />
+        <mat-icon matSuffix>lock</mat-icon>
+        <mat-error
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        >
+          <span *ngIf="loginForm.get('password')?.errors?.['required']"
+            >Password is required</span
+          >
+          <span *ngIf="loginForm.get('password')?.errors?.['minlength']"
+            >Password must be at least 6 characters</span
+          >
+        </mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit" class="full-width">Sign In</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="full-width login-button"
+        [disabled]="isLoading || loginForm.invalid"
+      >
+        <mat-spinner
+          *ngIf="isLoading"
+          diameter="20"
+          class="button-spinner"
+        ></mat-spinner>
+        <mat-icon *ngIf="!isLoading">login</mat-icon>
+        {{ isLoading ? "Signing In..." : "Sign In" }}
+      </button>
     </form>
   </mat-card>
 </div>
-
-
-
