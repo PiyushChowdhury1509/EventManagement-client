@@ -1,23 +1,607 @@
-.create-event {
-  padding: 16px;
+// Color variables
+$primary: #2563eb;
+$primary-light: #3b82f6;
+$primary-dark: #1d4ed8;
+$secondary: #10b981;
+$accent: #f59e0b;
+$danger: #ef4444;
+$success: #10b981;
+$warning: #f59e0b;
+$info: #3b82f6;
+
+$surface: #ffffff;
+$surface-2: #f8fafc;
+$surface-3: #f1f5f9;
+$border: #e2e8f0;
+$border-light: #f1f5f9;
+$text: #1e293b;
+$text-muted: #64748b;
+$text-light: #94a3b8;
+
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+$shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+$radius: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+
+.create-event-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 0;
 }
 
+.create-event-header {
+  background: linear-gradient(135deg, $primary 0%, $primary-dark 100%);
+  color: white;
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.1;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .header-icon {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+
+      mat-icon {
+        font-size: 2.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+
+    .header-text {
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+        letter-spacing: -0.025em;
+      }
+
+      p {
+        font-size: 1.125rem;
+        margin: 0;
+        opacity: 0.9;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.create-event-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.event-stepper {
+  background: $surface;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-xl;
+  overflow: hidden;
+  border: 1px solid $border;
+
+  ::ng-deep .mat-stepper-horizontal {
+    .mat-stepper-header {
+      padding: 1.5rem 1rem;
+      background: $surface-2;
+      border-bottom: 1px solid $border;
+
+      .mat-step-header {
+        .mat-step-icon {
+          background: $primary;
+          color: white;
+          width: 2.5rem;
+          height: 2.5rem;
+          font-size: 1.25rem;
+        }
+
+        .mat-step-label {
+          font-weight: 600;
+          color: $text;
+          font-size: 1rem;
+        }
+
+        &.mat-step-header-selected {
+          .mat-step-icon {
+            background: $primary;
+            box-shadow: 0 0 0 4px rgba($primary, 0.2);
+          }
+        }
+
+        &.mat-step-header-completed {
+          .mat-step-icon {
+            background: $success;
+          }
+        }
+      }
+    }
+
+    .mat-stepper-content {
+      padding: 0;
+    }
+  }
+}
+
+.step-content {
+  padding: 2rem;
+}
+
+.step-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid $border-light;
+
+  mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    color: $primary;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: $text;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    font-size: 1.125rem;
+    color: $text-muted;
+    margin: 0;
+  }
+}
+
+.event-form {
+  .form-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  ::ng-deep .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      background: $surface-2;
+      border-radius: $radius;
+    }
+
+    .mat-mdc-form-field-focus-overlay {
+      background: $surface;
+    }
+
+    &.mat-focused .mat-mdc-form-field-focus-overlay {
+      background: $surface;
+    }
+
+    // Error state styling
+    &.mat-form-field-invalid {
+      .mat-mdc-text-field-wrapper {
+        border-color: $danger;
+      }
+    }
+
+    .mat-mdc-form-field-error {
+      color: $danger;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: 0.25rem;
+    }
+  }
+}
+
+.date-time-section {
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text;
+    margin: 0 0 1rem 0;
+  }
+
+  .date-time-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    .date-field, .time-field {
+      width: 100%;
+    }
+  }
+}
+
+.file-upload-section {
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text;
+    margin: 0 0 1rem 0;
+  }
+
+  .file-upload {
+    border: 2px dashed $border;
+    border-radius: $radius-lg;
+    padding: 2rem;
+    text-align: center;
+    background: $surface-2;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+      border-color: $primary;
+      background: rgba($primary, 0.05);
+    }
+
+    &.drag-over {
+      border-color: $primary;
+      background: rgba($primary, 0.1);
+      transform: scale(1.02);
+    }
+
+    .file-label {
+      display: block;
+      cursor: pointer;
+      width: 100%;
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .upload-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        mat-icon {
+          font-size: 3rem;
+          width: 3rem;
+          height: 3rem;
+          color: $primary;
+        }
+
+        .upload-text {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+
+          .upload-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: $text;
+          }
+
+          .upload-subtitle {
+            font-size: 0.875rem;
+            color: $text-muted;
+          }
+        }
+      }
+    }
+  }
+
+  .file-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: $surface;
+      border: 1px solid $border;
+      border-radius: $radius;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: $surface-2;
+        border-color: $primary;
+      }
+
+      .file-icon {
+        color: $primary;
+        font-size: 1.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+
+      .file-name {
+        flex: 1;
+        font-weight: 500;
+        color: $text;
+      }
+
+      .file-size {
+        font-size: 0.875rem;
+        color: $text-muted;
+      }
+
+      .remove-file {
+        color: $danger;
+        width: 2rem;
+        height: 2rem;
+
+        &:hover {
+          background: rgba($danger, 0.1);
+        }
+      }
+    }
+  }
+}
+
+.step-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid $border-light;
+  margin-top: 2rem;
+
+  .back-button {
+    color: $text-muted;
+    border-color: $border;
+
+    &:hover {
+      background: $surface-2;
+      border-color: $primary;
+    }
+  }
+
+  .next-button, .publish-button {
+    background: $primary;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: $radius;
+    box-shadow: $shadow;
+
+    &:hover {
+      background: $primary-dark;
+      box-shadow: $shadow-lg;
+    }
+
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .publish-button {
+    background: $success;
+
+    &:hover {
+      background: darken($success, 10%);
+    }
+  }
+}
+
+.overview-section {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr 1fr;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.overview-card, .form-preview-card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow;
+  overflow: hidden;
+
+  .overview-header, .preview-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: $surface-2;
+    border-bottom: 1px solid $border;
+
+    mat-icon {
+      color: $primary;
+      font-size: 1.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $text;
+    }
+  }
+
+  .overview-content {
+    padding: 1.5rem;
+
+    .overview-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      label {
+        font-weight: 600;
+        color: $text-muted;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      span {
+        color: $text;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .file-preview {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .file-preview-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.5rem;
+          background: $surface-2;
+          border-radius: $radius;
+          font-size: 0.875rem;
+
+          mat-icon {
+            color: $primary;
+            font-size: 1rem;
+            width: 1rem;
+            height: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .form-preview {
+    padding: 1.5rem;
+
+    .preview-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 3rem 1rem;
+      background: $surface-2;
+      border-radius: $radius;
+      border: 2px dashed $border;
+      text-align: center;
+
+      mat-icon {
+        font-size: 3rem;
+        width: 3rem;
+        height: 3rem;
+        color: $text-muted;
+      }
+
+      p {
+        color: $text-muted;
+        margin: 0;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .create-event-header {
+    padding: 2rem 1rem;
+
+    .header-content {
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+
+      .header-icon {
+        padding: 0.75rem;
+
+        mat-icon {
+          font-size: 2rem;
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+
+      .header-text h1 {
+        font-size: 2rem;
+      }
+    }
+  }
+
+  .create-event-content {
+    padding: 1rem;
+  }
+
+  .step-content {
+    padding: 1.5rem;
+  }
+
+  .step-actions {
+    flex-direction: column;
+    gap: 1rem;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// Utility classes
 .full-width { width: 100%; }
 
-.file-upload {
-  margin: 10px 0 16px;
-  .file-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border: 1px dashed #1f2a38;
-    border-radius: 8px;
-    cursor: pointer;
+// Button spinner
+.button-spinner {
+  margin-right: 0.5rem;
+}
+
+// Snackbar styles
+::ng-deep {
+  .success-snackbar {
+    background: $success;
+    color: white;
   }
-  input[type="file"] { display: none; }
-  .file-list { margin-top: 8px; }
-  .file-item { opacity: 0.9; }
+
+  .error-snackbar {
+    background: $danger;
+    color: white;
+  }
 }
 
 

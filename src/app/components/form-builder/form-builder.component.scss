@@ -1,147 +1,522 @@
-// Light theme variables
-$bg: #f8fafc;
-$surface: #ffffff;
-$surface-2: #fefefe;
-$border: #e5e7eb;
-$text: #1f2937;
-$muted: #6b7280;
+// Color variables
 $primary: #2563eb;
-$accent: #10b981;
+$primary-light: #3b82f6;
+$primary-dark: #1d4ed8;
+$secondary: #10b981;
+$accent: #f59e0b;
 $danger: #ef4444;
-$shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+$success: #10b981;
+$warning: #f59e0b;
+$info: #3b82f6;
+
+$surface: #ffffff;
+$surface-2: #f8fafc;
+$surface-3: #f1f5f9;
+$border: #e2e8f0;
+$border-light: #f1f5f9;
+$text: #1e293b;
+$text-muted: #64748b;
+$text-light: #94a3b8;
+
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+$shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+$radius: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
 
 .form-builder {
   background: $surface;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
   border: 1px solid $border;
-  box-shadow: $shadow;
-  color: $text;
-  padding: 20px;
-  border-radius: 12px;
+}
 
-  .header {
+.form-builder-header {
+  background: linear-gradient(135deg, $surface-2 0%, $surface-3 100%);
+  padding: 2rem;
+  border-bottom: 1px solid $border;
+
+  .header-content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 8px 4px 16px;
-    border-bottom: 1px solid $border;
+    gap: 1rem;
 
-    .title {
+    .header-icon {
+      background: $primary;
+      color: white;
+      border-radius: 50%;
+      padding: 0.75rem;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
 
+      mat-icon {
+        font-size: 1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+
+    .header-text {
       h2 {
-        margin: 0;
+        margin: 0 0 0.25rem 0;
+        font-size: 1.5rem;
         font-weight: 700;
-        letter-spacing: 0.2px;
+        color: $text;
       }
 
-      mat-icon { color: $accent; }
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-    }
-  }
-
-  .builder-form {
-    padding-top: 16px;
-  }
-
-  .grid {
-    display: grid;
-    gap: 16px;
-    grid-template-columns: repeat(12, 1fr);
-
-    .col {
-      grid-column: span 12;
-    }
-
-    .col-md-6 {
-      @media (min-width: 768px) {
-        grid-column: span 6;
+      p {
+        margin: 0;
+        color: $text-muted;
+        font-size: 0.875rem;
       }
     }
   }
+}
 
-  .fields { margin-top: 10px; display: flex; flex-direction: column; gap: 16px; }
+.builder-form {
+  padding: 2rem;
 
-  .field-item {
-    .field-card {
-      background: $surface;
-      border: 1px solid $border;
-      border-radius: 12px;
-      box-shadow: $shadow;
-      overflow: hidden;
+  .form-name-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid $border-light;
 
-      .field-card__header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 12px;
+    ::ng-deep .mat-mdc-form-field {
+      .mat-mdc-text-field-wrapper {
         background: $surface-2;
-        border-bottom: 1px solid $border;
+        border-radius: $radius;
       }
+    }
+  }
+
+  .fields-section {
+    .fields-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $text;
+      }
+
+      .add-field-btn {
+        background: $primary;
+        color: white;
+        border-radius: $radius;
+        font-weight: 600;
+        box-shadow: $shadow;
+
+        &:hover {
+          background: $primary-dark;
+          box-shadow: $shadow-lg;
+        }
+
+        mat-icon {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+
+    .fields-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+}
+
+.field-item {
+  .field-card {
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow;
+    overflow: hidden;
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: $shadow-lg;
+      border-color: $primary;
+    }
+
+    .field-card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background: $surface-2;
+      border-bottom: 1px solid $border;
 
       .field-card__title {
         display: flex;
         align-items: center;
-        gap: 8px;
-        h3 { margin: 0; font-size: 16px; }
-        .drag-handle { color: $muted; cursor: grab; }
+        gap: 0.75rem;
+
+        .drag-handle {
+          color: $text-muted;
+          cursor: grab;
+          font-size: 1.25rem;
+          width: 1.25rem;
+          height: 1.25rem;
+
+          &:hover {
+            color: $primary;
+          }
+        }
+
+        h3 {
+          margin: 0;
+          font-size: 1rem;
+          font-weight: 600;
+          color: $text;
+        }
+
+        .field-type-badge {
+          background: $primary;
+          color: white;
+          padding: 0.25rem 0.5rem;
+          border-radius: $radius;
+          font-size: 0.75rem;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
       }
 
       .field-card__actions {
-        button[mat-icon-button] { border: 1px solid #fee2e2; background: #fef2f2; }
+        button[mat-icon-button] {
+          color: $danger;
+          width: 2rem;
+          height: 2rem;
+
+          &:hover {
+            background: rgba($danger, 0.1);
+          }
+        }
+      }
+    }
+
+    .field-card__content {
+      padding: 1.5rem;
+
+      .grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(12, 1fr);
+
+        .col {
+          grid-column: span 12;
+        }
+
+        .col-md-6 {
+          @media (min-width: 768px) {
+            grid-column: span 6;
+          }
+        }
+
+        .col-md-12 {
+          @media (min-width: 768px) {
+            grid-column: span 12;
+          }
+        }
       }
 
-      .grid { padding: 12px; }
+      .field-options {
+        margin-top: 1rem;
+
+        .required-checkbox {
+          .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: $text;
+
+            mat-icon {
+              color: $warning;
+              font-size: 1rem;
+              width: 1rem;
+              height: 1rem;
+            }
+          }
+        }
+      }
 
       .options {
-        padding: 0 12px 12px;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid $border-light;
 
         &__header {
           display: flex;
-          align-items: center;
           justify-content: space-between;
-          margin-bottom: 8px;
-          h4 { margin: 0; font-weight: 600; color: $text; }
+          align-items: center;
+          margin-bottom: 1rem;
+
+          h4 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: $text;
+          }
+
+          .add-option-btn {
+            color: $primary;
+            border-color: $primary;
+            font-size: 0.875rem;
+            font-weight: 500;
+
+            &:hover {
+              background: rgba($primary, 0.1);
+            }
+
+            mat-icon {
+              margin-right: 0.25rem;
+              font-size: 1rem;
+              width: 1rem;
+              height: 1rem;
+            }
+          }
         }
 
         &__list {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: 0.75rem;
 
           .option-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.75rem;
 
-            &__field { flex: 1; }
+            &__field {
+              flex: 1;
+            }
+
+            button[mat-icon-button] {
+              color: $danger;
+              width: 2rem;
+              height: 2rem;
+
+              &:hover {
+                background: rgba($danger, 0.1);
+              }
+            }
           }
         }
       }
     }
   }
-
-  .footer-actions {
-    display: flex;
-    gap: 10px;
-    padding-top: 16px;
-    border-top: 1px solid $border;
-  }
-
-  // Material tweaks for light mode
-  ::ng-deep .mat-mdc-card { background: transparent; }
-  ::ng-deep .mat-mdc-form-field-subscript-wrapper { color: $muted; }
-  ::ng-deep .mdc-text-field--filled { background: #f9fafb; }
-  ::ng-deep .mdc-line-ripple::after { border-bottom-color: $primary; }
-  ::ng-deep .mdc-checkbox__background { border-color: $primary; }
 }
 
-// Utility: full-width form field
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  background: $surface-2;
+  border: 2px dashed $border;
+  border-radius: $radius-lg;
+
+  mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    color: $text-muted;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text;
+  }
+
+  p {
+    margin: 0;
+    color: $text-muted;
+    font-size: 0.875rem;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2rem;
+  border-top: 1px solid $border-light;
+  margin-top: 2rem;
+
+  .save-form-btn {
+    background: $success;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: $radius;
+    box-shadow: $shadow;
+
+    &:hover {
+      background: darken($success, 10%);
+      box-shadow: $shadow-lg;
+    }
+
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// Material Design overrides
+::ng-deep {
+  .mat-mdc-card {
+    background: transparent;
+  }
+
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      background: $surface-2;
+      border-radius: $radius;
+    }
+
+    .mat-mdc-form-field-focus-overlay {
+      background: $surface;
+    }
+
+    &.mat-focused .mat-mdc-form-field-focus-overlay {
+      background: $surface;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      color: $text-muted;
+    }
+
+    // Error state styling
+    &.mat-form-field-invalid {
+      .mat-mdc-text-field-wrapper {
+        border-color: $danger;
+      }
+    }
+
+    .mat-mdc-form-field-error {
+      color: $danger;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .mat-mdc-select {
+    .mat-mdc-select-value {
+      color: $text;
+    }
+
+    .mat-mdc-select-arrow {
+      color: $text-muted;
+    }
+  }
+
+  .mat-mdc-option {
+    .option-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      mat-icon {
+        color: $primary;
+        font-size: 1.125rem;
+        width: 1.125rem;
+        height: 1.125rem;
+      }
+
+      span {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .mat-mdc-checkbox {
+    .mdc-checkbox__background {
+      border-color: $primary;
+    }
+
+    &.mat-mdc-checkbox-checked .mdc-checkbox__background {
+      background-color: $primary;
+      border-color: $primary;
+    }
+  }
+
+  .mat-mdc-button {
+    &.mat-mdc-raised-button {
+      box-shadow: $shadow;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .form-builder-header {
+    padding: 1.5rem;
+
+    .header-content {
+      flex-direction: column;
+      text-align: center;
+      gap: 0.75rem;
+
+      .header-icon {
+        padding: 0.5rem;
+
+        mat-icon {
+          font-size: 1.25rem;
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+      }
+    }
+  }
+
+  .builder-form {
+    padding: 1.5rem;
+
+    .fields-section .fields-header {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+
+      .add-field-btn {
+        width: 100%;
+      }
+    }
+
+    .field-item .field-card .field-card__content .options__header {
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: stretch;
+
+      .add-option-btn {
+        width: 100%;
+      }
+    }
+  }
+
+  .form-actions {
+    .save-form-btn {
+      width: 100%;
+    }
+  }
+}
+
+// Utility classes
 .full-width { width: 100%; }
 
 

@@ -1,93 +1,212 @@
-<mat-card>
-  <h2>Create Event Form</h2>
+<div class="form-builder">
+  <div class="form-builder-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <mat-icon>dynamic_form</mat-icon>
+      </div>
+      <div class="header-text">
+        <h2>Registration Form Builder</h2>
+        <p>Create custom fields for your event registration form</p>
+      </div>
+    </div>
+  </div>
 
-  <form [formGroup]="formBuilderForm" (ngSubmit)="submitForm()">
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Form Name</mat-label>
-      <input matInput formControlName="name" />
-    </mat-form-field>
+  <form [formGroup]="formBuilderForm" (ngSubmit)="submitForm()" class="builder-form">
+    <div class="form-name-section">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Form Name</mat-label>
+        <input matInput formControlName="name" placeholder="e.g. Event Registration Form" />
+        <mat-icon matSuffix>title</mat-icon>
+        <mat-error *ngIf="formBuilderForm.get('name')?.invalid && formBuilderForm.get('name')?.touched">
+          Form name is required
+        </mat-error>
+      </mat-form-field>
+    </div>
 
-    <div formArrayName="fields">
-      <div
-        *ngFor="let field of fields.controls; let i = index"
-        [formGroupName]="i"
-        class="field-block"
-      >
-        <mat-card class="field-card">
-          <h3>Field {{ i + 1 }}</h3>
+    <div class="fields-section">
+      <div class="fields-header">
+        <h3>Form Fields</h3>
+        <button mat-raised-button color="primary" (click)="addField()" type="button" class="add-field-btn">
+          <mat-icon>add</mat-icon>
+          Add Field
+        </button>
+      </div>
 
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Label</mat-label>
-            <input matInput formControlName="label" />
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="type">
-              <mat-option value="text">Text</mat-option>
-              <mat-option value="number">Number</mat-option>
-              <mat-option value="date">Date</mat-option>
-              <mat-option value="radio">Radio</mat-option>
-              <mat-option value="select">Select</mat-option>
-              <mat-option value="checkbox">Checkbox</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-checkbox formControlName="required">Required</mat-checkbox>
-
-          <div
-            formArrayName="options"
-            *ngIf="
-              field.get('type')?.value === 'radio' ||
-              field.get('type')?.value === 'select'
-            "
-          >
-            <h4>Options</h4>
-            <div
-              *ngFor="
-                let opt of $any(field.get('options')).controls;
-                let j = index
-              "
-            >
-              <mat-form-field appearance="fill">
-                <mat-label>Option {{ j + 1 }}</mat-label>
-                <input matInput [formControlName]="j" />
-              </mat-form-field>
-              <button
-                mat-icon-button
-                color="warn"
-                (click)="removeOption(i, j)"
-                type="button"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
+      <div formArrayName="fields" class="fields-container">
+        <div
+          *ngFor="let field of fields.controls; let i = index"
+          [formGroupName]="i"
+          class="field-item"
+        >
+          <div class="field-card">
+            <div class="field-card__header">
+              <div class="field-card__title">
+                <mat-icon class="drag-handle">drag_indicator</mat-icon>
+                <h3>Field {{ i + 1 }}</h3>
+                <span class="field-type-badge">{{ getFieldTypeLabel(field.get('type')?.value) }}</span>
+              </div>
+              <div class="field-card__actions">
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="removeField(i)"
+                  type="button"
+                  matTooltip="Remove field"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
             </div>
-            <button
-              mat-stroked-button
-              color="primary"
-              (click)="addOption(i)"
-              type="button"
-            >
-              Add Option
-            </button>
-          </div>
 
-          <button
-            mat-raised-button
-            color="warn"
-            (click)="removeField(i)"
-            type="button"
-          >
-            Remove Field
-          </button>
-        </mat-card>
+            <div class="field-card__content">
+              <div class="grid">
+                <div class="col col-md-6">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Field Label</mat-label>
+                    <input matInput formControlName="label" placeholder="e.g. Full Name" />
+                    <mat-icon matSuffix>label</mat-icon>
+                    <mat-error *ngIf="field.get('label')?.invalid && field.get('label')?.touched">
+                      Field label is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col col-md-6">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Field Type</mat-label>
+                    <mat-select formControlName="type">
+                      <mat-option value="text">
+                        <div class="option-content">
+                          <mat-icon>text_fields</mat-icon>
+                          <span>Text Input</span>
+                        </div>
+                      </mat-option>
+                      <mat-option value="number">
+                        <div class="option-content">
+                          <mat-icon>numbers</mat-icon>
+                          <span>Number Input</span>
+                        </div>
+                      </mat-option>
+                      <mat-option value="date">
+                        <div class="option-content">
+                          <mat-icon>calendar_today</mat-icon>
+                          <span>Date Picker</span>
+                        </div>
+                      </mat-option>
+                      <mat-option value="email">
+                        <div class="option-content">
+                          <mat-icon>email</mat-icon>
+                          <span>Email Input</span>
+                        </div>
+                      </mat-option>
+                      <mat-option value="radio">
+                        <div class="option-content">
+                          <mat-icon>radio_button_checked</mat-icon>
+                          <span>Radio Buttons</span>
+                        </div>
+                      </mat-option>
+                      <mat-option value="select">
+                        <div class="option-content">
+                          <mat-icon>arrow_drop_down</mat-icon>
+                          <span>Dropdown</span>
+                        </div>
+                      </mat-option>
+                      <mat-option value="checkbox">
+                        <div class="option-content">
+                          <mat-icon>check_box</mat-icon>
+                          <span>Checkbox</span>
+                        </div>
+                      </mat-option>
+                      <mat-option value="textarea">
+                        <div class="option-content">
+                          <mat-icon>notes</mat-icon>
+                          <span>Text Area</span>
+                        </div>
+                      </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>category</mat-icon>
+                  </mat-form-field>
+                </div>
+
+                <div class="col col-md-12">
+                  <div class="field-options">
+                    <mat-checkbox formControlName="required" class="required-checkbox">
+                      <span class="checkbox-label">
+                        <mat-icon>star</mat-icon>
+                        Required field
+                      </span>
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                formArrayName="options"
+                *ngIf="
+                  field.get('type')?.value === 'radio' ||
+                  field.get('type')?.value === 'select' ||
+                  field.get('type')?.value === 'checkbox'
+                "
+                class="options"
+              >
+                <div class="options__header">
+                  <h4>Options</h4>
+                  <button
+                    mat-stroked-button
+                    color="primary"
+                    (click)="addOption(i)"
+                    type="button"
+                    class="add-option-btn"
+                  >
+                    <mat-icon>add</mat-icon>
+                    Add Option
+                  </button>
+                </div>
+
+                <div class="options__list">
+                  <div
+                    *ngFor="
+                      let opt of $any(field.get('options')).controls;
+                      let j = index
+                    "
+                    class="option-row"
+                  >
+                    <mat-form-field appearance="outline" class="option-row__field">
+                      <mat-label>Option {{ j + 1 }}</mat-label>
+                      <input matInput [formControlName]="j" placeholder="Enter option text" />
+                      <mat-error *ngIf="$any(field.get('options')).at(j)?.invalid && $any(field.get('options')).at(j)?.touched">
+                        Option text is required
+                      </mat-error>
+                    </mat-form-field>
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="removeOption(i, j)"
+                      type="button"
+                      matTooltip="Remove option"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="fields.length === 0" class="empty-state">
+          <mat-icon>dynamic_form</mat-icon>
+          <h3>No fields added yet</h3>
+          <p>Click "Add Field" to start building your registration form</p>
+        </div>
       </div>
     </div>
 
-    <button mat-raised-button color="accent" (click)="addField()" type="button">
-      + Add Field
-    </button>
-    <br /><br />
-    <button mat-raised-button color="primary" type="submit">Save Form</button>
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" class="save-form-btn">
+        <mat-icon>save</mat-icon>
+        Save Form
+      </button>
+    </div>
   </form>
-</mat-card>
+</div>

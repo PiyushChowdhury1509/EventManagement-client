@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormArray,
@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-form-builder',
@@ -33,9 +34,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
+    MatTooltipModule,
   ],
 })
 export class FormBuilderComponent {
+  @Output() formBuilt = new EventEmitter<any>();
   formBuilderForm: FormGroup;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -57,33 +60,67 @@ export class FormBuilderComponent {
       options: this.fb.array([]),
     });
     this.fields.push(fieldGroup);
+    this.emitFormData();
   }
 
   removeField(index: number) {
     this.fields.removeAt(index);
+    this.emitFormData();
   }
 
   addOption(fieldIndex: number) {
     const options = this.fields.at(fieldIndex).get('options') as FormArray;
-    options.push(this.fb.control(''));
+    options.push(this.fb.control('', Validators.required));
+    this.emitFormData();
   }
 
   removeOption(fieldIndex: number, optionIndex: number) {
     const options = this.fields.at(fieldIndex).get('options') as FormArray;
     options.removeAt(optionIndex);
+    this.emitFormData();
+  }
+
+  getFieldTypeLabel(type: string): string {
+    const typeLabels: { [key: string]: string } = {
+      'text': 'Text Input',
+      'number': 'Number Input',
+      'date': 'Date Picker',
+      'email': 'Email Input',
+      'radio': 'Radio Buttons',
+      'select': 'Dropdown',
+      'checkbox': 'Checkbox',
+      'textarea': 'Text Area'
+    };
+    return typeLabels[type] || 'Unknown';
   }
 
   submitForm() {
+    // Mark all fields as touched to show validation errors
+    this.formBuilderForm.markAllAsTouched();
+    
     if (this.formBuilderForm.valid) {
       const payload = {
         ...this.formBuilderForm.value,
         createdBy: '64e1234567abcd1234567890', // replace with real adminId
       };
 
+      // Emit the form data to parent component
+      this.formBuilt.emit(payload);
+
       this.http.post('http://localhost:5000/api/forms', payload).subscribe({
         next: () => alert('Form created successfully!'),
         error: () => alert('Error creating form'),
       });
+    }
+  }
+
+  private emitFormData() {
+    if (this.formBuilderForm.valid) {
+      const payload = {
+        ...this.formBuilderForm.value,
+        createdBy: '64e1234567abcd1234567890',
+      };
+      this.formBuilt.emit(payload);
     }
   }
 }

@@ -1,59 +1,228 @@
-<mat-card class="create-event">
-  <h2>Create Event</h2>
-  <mat-horizontal-stepper>
-    <mat-step [stepControl]="detailsForm" label="Basic Details">
-      <form [formGroup]="detailsForm">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Event Name</mat-label>
-          <input matInput formControlName="name" placeholder="e.g. Tech Summit 2025">
-        </mat-form-field>
+<div class="create-event-container">
+  <div class="create-event-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <mat-icon>event</mat-icon>
+      </div>
+      <div class="header-text">
+        <h1>Create New Event</h1>
+        <p>Set up your event with custom forms and registration details</p>
+      </div>
+    </div>
+  </div>
 
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Details</mat-label>
-          <textarea matInput rows="5" formControlName="details" placeholder="Describe the event"></textarea>
-        </mat-form-field>
+  <div class="create-event-content">
+    <mat-horizontal-stepper class="event-stepper" #stepper>
+      <mat-step [stepControl]="detailsForm" label="Event Details" state="event">
+        <div class="step-content">
+          <div class="step-header">
+            <mat-icon>info</mat-icon>
+            <h2>Basic Event Information</h2>
+            <p>Provide the essential details about your event</p>
+          </div>
+          
+          <form [formGroup]="detailsForm" class="event-form">
+            <div class="form-grid">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Event Name</mat-label>
+                <input matInput formControlName="name" placeholder="e.g. Tech Summit 2025">
+                <mat-icon matSuffix>event</mat-icon>
+                <mat-error *ngIf="detailsForm.get('name')?.invalid && detailsForm.get('name')?.touched">
+                  Event name is required
+                </mat-error>
+              </mat-form-field>
 
-        <div class="file-upload">
-          <label class="file-label">
-            <input type="file" multiple (change)="onFilesSelected($event)">
-            <mat-icon>upload</mat-icon>
-            <span>Upload files</span>
-          </label>
-          <div class="file-list" *ngIf="uploadedFiles.length">
-            <div class="file-item" *ngFor="let f of uploadedFiles">{{ f.name }}</div>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Event Description</mat-label>
+                <textarea matInput rows="4" formControlName="details" placeholder="Describe your event, its purpose, and what attendees can expect..."></textarea>
+                <mat-icon matSuffix>description</mat-icon>
+                <mat-error *ngIf="detailsForm.get('details')?.invalid && detailsForm.get('details')?.touched">
+                  <span *ngIf="detailsForm.get('details')?.errors?.['required']">Event description is required</span>
+                  <span *ngIf="detailsForm.get('details')?.errors?.['minlength']">Description must be at least 10 characters long</span>
+                </mat-error>
+              </mat-form-field>
+
+              <div class="date-time-section">
+                <h3>Event Schedule</h3>
+                <div class="date-time-grid">
+                  <mat-form-field appearance="outline" class="date-field">
+                    <mat-label>Event Date</mat-label>
+                    <input matInput [matDatepicker]="eventDatePicker" formControlName="eventDate" placeholder="Select event date">
+                    <mat-datepicker-toggle matSuffix [for]="eventDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #eventDatePicker></mat-datepicker>
+                    <mat-icon matSuffix>calendar_today</mat-icon>
+                    <mat-error *ngIf="detailsForm.get('eventDate')?.invalid && detailsForm.get('eventDate')?.touched">
+                      Event date is required
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="time-field">
+                    <mat-label>Start Time</mat-label>
+                    <input matInput type="time" formControlName="eventTime" placeholder="HH:MM">
+                    <mat-icon matSuffix>schedule</mat-icon>
+                    <mat-error *ngIf="detailsForm.get('eventTime')?.invalid && detailsForm.get('eventTime')?.touched">
+                      Start time is required
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="date-field">
+                    <mat-label>End Date (Optional)</mat-label>
+                    <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" placeholder="Select end date">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                    <mat-icon matSuffix>event_available</mat-icon>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="time-field">
+                    <mat-label>End Time (Optional)</mat-label>
+                    <input matInput type="time" formControlName="endTime" placeholder="HH:MM">
+                    <mat-icon matSuffix>schedule</mat-icon>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Event Location</mat-label>
+                <input matInput formControlName="location" placeholder="e.g. Conference Center, Room 101, 123 Main St">
+                <mat-icon matSuffix>location_on</mat-icon>
+              </mat-form-field>
+
+              <div class="file-upload-section">
+                <h3>Event Materials</h3>
+                <div class="file-upload" [class.drag-over]="isDragOver" 
+                     (dragover)="onDragOver($event)" 
+                     (dragleave)="onDragLeave($event)" 
+                     (drop)="onDrop($event)">
+                  <label class="file-label">
+                    <input type="file" multiple (change)="onFilesSelected($event)" #fileInput>
+                    <div class="upload-content">
+                      <mat-icon>cloud_upload</mat-icon>
+                      <div class="upload-text">
+                        <span class="upload-title">Drop files here or click to upload</span>
+                        <span class="upload-subtitle">Support for images, documents, and presentations</span>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                
+                <div class="file-list" *ngIf="uploadedFiles.length">
+                  <div class="file-item" *ngFor="let file of uploadedFiles; let i = index">
+                    <mat-icon class="file-icon">insert_drive_file</mat-icon>
+                    <span class="file-name">{{ file.name }}</span>
+                    <span class="file-size">({{ formatFileSize(file.size) }})</span>
+                    <button mat-icon-button (click)="removeFile(i)" class="remove-file">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-actions">
+              <button mat-raised-button matStepperNext [disabled]="!detailsForm.valid" class="next-button">
+                <mat-icon>arrow_forward</mat-icon>
+                Next: Build Form
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-step>
+
+      <mat-step label="Build Form" state="build">
+        <div class="step-content">
+          <div class="step-header">
+            <mat-icon>build</mat-icon>
+            <h2>Create Registration Form</h2>
+            <p>Design a custom form for event registration</p>
+          </div>
+          
+          <app-form-builder (formBuilt)="onFormBuilt($event)"></app-form-builder>
+          
+          <div class="step-actions">
+            <button mat-stroked-button matStepperPrevious class="back-button">
+              <mat-icon>arrow_back</mat-icon>
+              Back
+            </button>
+            <button mat-raised-button matStepperNext class="next-button">
+              <mat-icon>arrow_forward</mat-icon>
+              Next: Review
+            </button>
           </div>
         </div>
+      </mat-step>
 
-        <div>
-          <button mat-stroked-button matStepperNext [disabled]="!detailsForm.valid">Next</button>
+      <mat-step label="Review & Publish" state="review">
+        <div class="step-content">
+          <div class="step-header">
+            <mat-icon>preview</mat-icon>
+            <h2>Review Your Event</h2>
+            <p>Review all details before publishing your event</p>
+          </div>
+          
+          <div class="overview-section">
+            <div class="overview-card">
+              <div class="overview-header">
+                <mat-icon>event</mat-icon>
+                <h3>Event Overview</h3>
+              </div>
+              <div class="overview-content">
+                <div class="overview-item">
+                  <label>Event Name</label>
+                  <span>{{ detailsForm.value.name || 'Not specified' }}</span>
+                </div>
+                <div class="overview-item">
+                  <label>Description</label>
+                  <span>{{ detailsForm.value.details || 'Not specified' }}</span>
+                </div>
+                <div class="overview-item" *ngIf="detailsForm.value.eventDate">
+                  <label>Event Date & Time</label>
+                  <span>{{ formatEventDateTime() }}</span>
+                </div>
+                <div class="overview-item" *ngIf="detailsForm.value.location">
+                  <label>Location</label>
+                  <span>{{ detailsForm.value.location }}</span>
+                </div>
+                <div class="overview-item" *ngIf="uploadedFiles.length">
+                  <label>Attached Files</label>
+                  <div class="file-preview">
+                    <div class="file-preview-item" *ngFor="let file of uploadedFiles">
+                      <mat-icon>insert_drive_file</mat-icon>
+                      <span>{{ file.name }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-preview-card">
+              <div class="preview-header">
+                <mat-icon>dynamic_form</mat-icon>
+                <h3>Registration Form Preview</h3>
+              </div>
+              <div class="form-preview">
+                <div class="preview-placeholder">
+                  <mat-icon>dynamic_form</mat-icon>
+                  <p>Form preview will appear here once you build your registration form</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-actions">
+            <button mat-stroked-button matStepperPrevious class="back-button">
+              <mat-icon>arrow_back</mat-icon>
+              Back
+            </button>
+            <button mat-raised-button color="primary" class="publish-button" 
+                    (click)="publishEvent()" 
+                    [disabled]="isSubmitting || !detailsForm.valid">
+              <mat-spinner *ngIf="isSubmitting" diameter="20" class="button-spinner"></mat-spinner>
+              <mat-icon *ngIf="!isSubmitting">publish</mat-icon>
+              {{ isSubmitting ? 'Publishing...' : 'Publish Event' }}
+            </button>
+          </div>
         </div>
-      </form>
-    </mat-step>
-
-    <mat-step label="Build Form">
-      <app-form-builder></app-form-builder>
-      <div>
-        <button mat-stroked-button matStepperPrevious>Back</button>
-        <button mat-stroked-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-
-    <mat-step label="Overview">
-      <div class="overview">
-        <h3>Overview</h3>
-        <p><strong>Name:</strong> {{ detailsForm.value.name }}</p>
-        <p><strong>Details:</strong> {{ detailsForm.value.details }}</p>
-        <div *ngIf="uploadedFiles.length">
-          <p><strong>Files:</strong></p>
-          <ul>
-            <li *ngFor="let f of uploadedFiles">{{ f.name }}</li>
-          </ul>
-        </div>
-      </div>
-      <div>
-        <button mat-stroked-button matStepperPrevious>Back</button>
-        <button mat-raised-button color="primary">Submit</button>
-      </div>
-    </mat-step>
-  </mat-horizontal-stepper>
-</mat-card>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>
