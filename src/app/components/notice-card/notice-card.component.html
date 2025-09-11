@@ -26,7 +26,7 @@
           {{ isLiked ? "favorite" : "favorite_border" }}
         </mat-icon>
       </span>
-      <span class="action">💬</span>
+      <span class="action" (click)="openComments()">💬</span>
       <span class="action">📤</span>
     </div>
     <span class="bookmark">🔖</span>
@@ -59,6 +59,47 @@
       <span class="author">{{ c.author }}</span>
       <span class="text">{{ c.text }}</span>
       <span class="time">• {{ formatDate(c.createdAt) }}</span>
+    </div>
+  </div>
+
+  <div class="comment-overlay" *ngIf="showComments">
+    <div class="overlay-backdrop" (click)="closeComments()"></div>
+    <div class="overlay-panel">
+      <div class="overlay-header">
+        <button class="close-btn" (click)="closeComments()">✕</button>
+        <div class="post-meta">
+          <div class="post-title">{{ notice.name }}</div>
+          <div class="post-sub">GoEvent • {{ formatDate(notice.createdAt) }}</div>
+        </div>
+      </div>
+
+      <div class="overlay-body">
+        <div class="comments-stream">
+          <div class="stream-item" *ngFor="let c of comments">
+            <img class="avatar" src="/assets/eventLogo.jpg" alt="avatar" />
+            <div class="content">
+              <div class="row">
+                <span class="author">{{ c.author }}</span>
+                <span class="time">{{ formatDate(c.createdAt) }}</span>
+              </div>
+              <div class="text">{{ c.text }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay-footer">
+        <input
+          type="text"
+          placeholder="Add a comment..."
+          [(ngModel)]="newComment"
+          (keyup.enter)="submitComment()"
+          [disabled]="isPosting"
+        />
+        <button (click)="submitComment()" [disabled]="!newComment.trim() || isPosting">
+          {{ isPosting ? 'Posting...' : 'Post' }}
+        </button>
+      </div>
     </div>
   </div>
 </div>

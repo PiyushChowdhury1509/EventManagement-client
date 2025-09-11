@@ -1,1 +1,32 @@
-<p>comment-section works!</p>
+<div class="cs-container">
+  <div class="cs-header">
+    <button class="close" (click)="inputData.onClose?.()">✕</button>
+    <div class="meta">
+      <div class="title">{{ inputData?.postTitle }}</div>
+      <div class="sub">{{ inputData?.postSubtitle }}</div>
+    </div>
+  </div>
+
+  <div class="cs-body">
+    <div class="cs-stream">
+      <div class="cs-item" *ngFor="let c of comments">
+        <img
+          class="avatar"
+          [src]="c.createdBy.profilePicture || '/assets/eventLogo.jpg'"
+          alt="avatar"
+        />
+        <div class="content">
+          <div class="row">
+            <span class="author">{{ c.createdBy.name }}</span>
+            <span class="time">{{ c.createdAt | date : "medium" }}</span>
+          </div>
+          <div class="text">{{ c.content }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs-footer">
+    <ng-content></ng-content>
+  </div>
+</div>

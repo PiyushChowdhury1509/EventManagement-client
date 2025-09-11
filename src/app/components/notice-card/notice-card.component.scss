@@ -211,3 +211,148 @@
   }
 }
 
+/* Full-screen comment overlay */
+.comment-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+
+  .overlay-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .overlay-panel {
+    position: relative;
+    background: #fff;
+    width: 100%;
+    max-width: 900px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    animation: slideUp 180ms ease-out;
+  }
+
+  .overlay-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+
+    .close-btn {
+      background: #f3f4f6;
+      border: none;
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .post-meta {
+      display: flex;
+      flex-direction: column;
+      .post-title {
+        font-weight: 700;
+      }
+      .post-sub {
+        font-size: 0.85rem;
+        color: #6b7280;
+      }
+    }
+  }
+
+  .overlay-body {
+    flex: 1;
+    overflow: auto;
+    padding: 12px 16px;
+
+    .comments-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .stream-item {
+        display: flex;
+        gap: 10px;
+
+        .avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .content {
+          flex: 1;
+
+          .row {
+            display: flex;
+            gap: 8px;
+            align-items: baseline;
+            .author {
+              font-weight: 700;
+            }
+            .time {
+              font-size: 0.85rem;
+              color: #6b7280;
+            }
+          }
+          .text {
+            color: #111827;
+          }
+        }
+      }
+    }
+  }
+
+  .overlay-footer {
+    display: flex;
+    gap: 10px;
+    padding: 12px 16px;
+    border-top: 1px solid #e5e7eb;
+    background: #fff;
+
+    input {
+      flex: 1;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #fafafa;
+    }
+    button {
+      background: #111827;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      padding: 10px 14px;
+      border-radius: 10px;
+
+      &:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+

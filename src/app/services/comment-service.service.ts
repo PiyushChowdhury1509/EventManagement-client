@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { GetCommentsApiResponse } from '../types/getCommentType';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,8 @@ export class CommentServiceService {
     page: number,
     limit: number
   ): Observable<any> {
-    return this.http.get<any>(
-      `${this.baseUrl}/:${postType}?postId=${postId}&page=${page}&limit=${limit}`
+    return this.http.get<GetCommentsApiResponse>(
+      `${this.baseUrl}/getComment/${postType}?postId=${postId}&page=${page}&limit=${limit}`
     );
   }
 

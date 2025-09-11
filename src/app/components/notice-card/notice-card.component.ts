@@ -15,6 +15,7 @@ export class NoticeCardComponent {
     [];
   newComment: string = '';
   isPosting: boolean = false;
+  showComments: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -83,5 +84,13 @@ export class NoticeCardComponent {
         this.isPosting = false;
       },
     });
+  }
+
+  openComments() {
+    this.showComments = true;
+  }
+
+  closeComments() {
+    this.showComments = false;
   }
 }
