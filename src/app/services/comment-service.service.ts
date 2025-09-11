@@ -20,4 +20,12 @@ export class CommentServiceService {
       `${this.baseUrl}/:${postType}?postId=${postId}&page=${page}&limit=${limit}`
     );
   }
+
+  postComment(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseUrl}/postComment/${payload.targetType}/${payload.targetId}`,
+      payload,
+      { withCredentials: true }
+    );
+  }
 }

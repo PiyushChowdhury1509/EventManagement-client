@@ -55,7 +55,7 @@ export class NoticeComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (notice) => {
-          console.log(notice);
+          console.log('notices: ', notice);
           this.noticeData = notice;
           this.total = notice?.meta?.totalCount || 0;
         },

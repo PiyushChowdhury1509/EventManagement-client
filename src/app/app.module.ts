@@ -4,9 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoticeComponent } from './pages/notice/notice.component';
-import { HttpClientModule } from '@angular/common/http';
-import { NoticeCardComponent } from './components/notice-card/notice-card.component';
 import { EventsComponent } from './pages/events/events.component';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { NoticeCardComponent } from './components/notice-card/notice-card.component';
+import { EventCardComponent } from './components/event-card/event-card.component';
 import { CreateEventComponent } from './pages/admin/create-event/create-event.component';
 import { FormBuilderComponent } from './components/form-builder/form-builder.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,25 +26,29 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FilterSidebarComponent } from './components/filter-sidebar/filter-sidebar.component';
 import { CreateNoticeComponent } from './pages/create-notice/create-notice.component';
 import { CommentSectionComponent } from './components/comment-section/comment-section.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { EditEventComponent } from './pages/admin/edit-event/edit-event.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NoticeComponent,
-    NoticeCardComponent,
-    NavbarComponent,
     EventsComponent,
+    NoticeCardComponent,
+    EventCardComponent,
+    NavbarComponent,
     CreateNoticeComponent,
     CommentSectionComponent,
     ProfileComponent,
+    EditEventComponent,
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -63,6 +69,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     MatCardModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

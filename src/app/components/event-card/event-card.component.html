@@ -1,0 +1,44 @@
+<div class="event-card">
+  <h2 class="event-title">{{ convertToUpperCase(event.name) }}</h2>
+
+  <div class="event-header">
+    <div class="event-meta">
+      <h3 class="event-org">GoEvent • {{ formatDate(event.createdAt) }}</h3>
+    </div>
+    <span class="menu">⋮</span>
+  </div>
+
+  <p class="event-content">{{ event.description }}</p>
+
+  <span class="event-badge">{{ event.category?.name || 'Event' }}</span>
+
+  <div class="event-attachment" *ngIf="event.files && event.files.length > 0">
+    <div class="file-icon">📂</div>
+    <a [href]="event.files[0].url" target="_blank" class="file-link">
+      {{ event.files[0].name || "View Attachment" }}
+    </a>
+  </div>
+
+  <div class="event-actions">
+    <div class="left">
+      <span class="action heart" (click)="toggleLike()">
+        <mat-icon [ngClass]="{ liked: isLiked }">
+          {{ isLiked ? "favorite" : "favorite_border" }}
+        </mat-icon>
+      </span>
+      <span class="action">💬</span>
+      <span class="action">📤</span>
+    </div>
+    <span class="bookmark">🔖</span>
+  </div>
+
+  <div class="event-footer">
+    <span class="likes"
+      ><strong>{{ event.likeCount || 0 }}</strong> likes</span
+    >
+    <span class="comments"
+      ><strong>{{ event.commentCount || 0 }}</strong> comments</span
+    >
+  </div>
+</div>
+

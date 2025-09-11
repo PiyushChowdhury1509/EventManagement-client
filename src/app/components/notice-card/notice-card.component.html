@@ -40,4 +40,25 @@
       ><strong>{{ notice.commentCount }}</strong> comments</span
     >
   </div>
+
+  <div class="comment-box">
+    <input
+      type="text"
+      placeholder="Add a comment..."
+      [(ngModel)]="newComment"
+      (keyup.enter)="submitComment()"
+      [disabled]="isPosting"
+    />
+    <button (click)="submitComment()" [disabled]="!newComment.trim() || isPosting">
+      {{ isPosting ? 'Posting...' : 'Post' }}
+    </button>
+  </div>
+
+  <div class="comment-list" *ngIf="comments.length">
+    <div class="comment-item" *ngFor="let c of comments">
+      <span class="author">{{ c.author }}</span>
+      <span class="text">{{ c.text }}</span>
+      <span class="time">• {{ formatDate(c.createdAt) }}</span>
+    </div>
+  </div>
 </div>

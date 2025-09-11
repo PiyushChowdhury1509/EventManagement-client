@@ -20,6 +20,7 @@
           {{ event.participants.length }} Participants</span
         >
       </div>
+      <img *ngIf="event.files" src="{{ event.files }}" />
     </mat-card-content>
 
     <mat-card-actions align="end">
